@@ -1,7 +1,9 @@
 package handlers
 
 import (
+	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 
 	"github.com/sanyog2491/bookings2/package/config"
@@ -66,6 +68,27 @@ func (m *Repository) Generals(w http.ResponseWriter, r *http.Request) {
 // Majors renders the room page
 func (m *Repository) Majors(w http.ResponseWriter, r *http.Request) {
 	render.RenderTemplate(w, r, "majors.page.tmpl", &models.TemplateData{})
+}
+
+type jsonstruct struct {
+	Ok      bool   `json:"Ok"`
+	Message string `json:"message"`
+}
+
+func (m *Repository) AvailabilityJson(w http.ResponseWriter, r *http.Request) {
+
+	resp := jsonstruct{
+		Ok:      true,
+		Message: "Available",
+	}
+	out, err := json.MarshalIndent(resp, "", "  ")
+	if err != nil {
+		log.Print(err)
+	}
+	log.Println(string(out))
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(out)
+
 }
 
 // Availability renders the search availability page
