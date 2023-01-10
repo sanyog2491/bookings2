@@ -1,10 +1,11 @@
 package handlers
 
 import (
+	"net/http"
+
 	"github.com/tsawler/bookings-app/pkg/config"
 	"github.com/tsawler/bookings-app/pkg/models"
 	"github.com/tsawler/bookings-app/pkg/render"
-	"net/http"
 )
 
 // Repo the repository used by the handlers
@@ -68,6 +69,9 @@ func (m *Repository) Majors(w http.ResponseWriter, r *http.Request) {
 // Availability renders the search availability page
 func (m *Repository) Availability(w http.ResponseWriter, r *http.Request) {
 	render.RenderTemplate(w, "search-availability.page.tmpl", &models.TemplateData{})
+}
+func (m *Repository) PostAvailability(w http.ResponseWriter, r *http.Request) {
+	w.Write([]byte("posted data"))
 }
 
 // Contact renders the contact page
