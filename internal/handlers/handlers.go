@@ -6,10 +6,10 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/sanyog2491/bookings2/package/config"
-	"github.com/sanyog2491/bookings2/package/models"
+	"github.com/sanyog2491/bookings2/internal/config"
+	"github.com/sanyog2491/bookings2/internal/models"
 
-	"github.com/sanyog2491/bookings2/package/render"
+	"github.com/sanyog2491/bookings2/internal/render"
 )
 
 // Repo the repository used by the handlers
@@ -81,11 +81,11 @@ func (m *Repository) AvailabilityJson(w http.ResponseWriter, r *http.Request) {
 		Ok:      true,
 		Message: "Available",
 	}
-	out, err := json.MarshalIndent(resp, "", "    ")
+	out, err := json.MarshalIndent(resp, "", "     ")
 	if err != nil {
 		log.Print(err)
 	}
-	log.Println(string(out))
+
 	w.Header().Set("Content-Type", "application/json")
 	w.Write(out)
 

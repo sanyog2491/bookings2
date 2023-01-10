@@ -7,9 +7,9 @@ import (
 	"time"
 
 	"github.com/alexedwards/scs/v2"
-	"github.com/sanyog2491/bookings2/package/config"
-	"github.com/sanyog2491/bookings2/package/handlers"
-	"github.com/sanyog2491/bookings2/package/render"
+	"github.com/sanyog2491/bookings2/internal/config"
+	"github.com/sanyog2491/bookings2/internal/handlers"
+	"github.com/sanyog2491/bookings2/internal/render"
 )
 
 const portNumber = ":8090"
