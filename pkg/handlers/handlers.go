@@ -5,6 +5,7 @@ import (
 
 	"github.com/sanyog2491/bookings2-app/pkg/models"
 	"github.com/sanyog2491/bookings2/package/config"
+	"github.com/sanyog2491/bookings/package/model"
 	"github.com/sanyog2491/bookings2/package/render"
 )
 
