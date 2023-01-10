@@ -202,7 +202,7 @@
                 } = c;
 
                 const {
-                    value: formValues
+                    value: result
                 } = await Swal.fire({
                     title: title,
                     html: msg,
@@ -227,10 +227,20 @@
                         ]
                     }
                 })
-
-                if (formValues) {
-                    Swal.fire(JSON.stringify(formValues))
+                if (result) {
+                    if (result.dismiss !== Swal.DismissReason.cancel) {
+                        if (result.value !== "") {
+                            if (c.callback !== undefined) {
+                                c.callback(result);
+                            }
+                        } else {
+                            callback(false);
+                        }
+                    } else {
+                        callback(false);
+                    }
                 }
+
             }
 
             return {

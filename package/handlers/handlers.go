@@ -81,7 +81,7 @@ func (m *Repository) AvailabilityJson(w http.ResponseWriter, r *http.Request) {
 		Ok:      true,
 		Message: "Available",
 	}
-	out, err := json.MarshalIndent(resp, "", "  ")
+	out, err := json.MarshalIndent(resp, "", "    ")
 	if err != nil {
 		log.Print(err)
 	}
