@@ -3,9 +3,9 @@ package handlers
 import (
 	"net/http"
 
-	"github.com/sanyog2491/bookings2-app/pkg/models"
 	"github.com/sanyog2491/bookings2/package/config"
-	"github.com/sanyog2491/bookings/package/model"
+	"github.com/sanyog2491/bookings2/package/models"
+
 	"github.com/sanyog2491/bookings2/package/render"
 )
 
@@ -73,9 +73,4 @@ func (m *Repository) Availability(w http.ResponseWriter, r *http.Request) {
 }
 func (m *Repository) PostAvailability(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte("posted data"))
-}
-
-// Contact renders the contact page
-func (m *Repository) Contact(w http.ResponseWriter, r *http.Request) {
-	render.RenderTemplate(w, "contact.page.tmpl", &models.TemplateData{})
 }

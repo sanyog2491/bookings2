@@ -8,8 +8,8 @@ import (
 
 	"github.com/alexedwards/scs/v2"
 	"github.com/sanyog2491/bookings2/package/config"
-	"github.com/sanyog2491/bookings2/pkg/handlers"
-	"github.com/sanyog2491/bookings2/pkg/render"
+	"github.com/sanyog2491/bookings2/package/handlers"
+	"github.com/sanyog2491/bookings2/package/render"
 )
 
 const portNumber = ":8090"

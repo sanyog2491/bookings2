@@ -10,7 +10,7 @@ import (
 
 	"github.com/justinas/nosurf"
 	"github.com/sanyog2491/bookings2/package/config"
-	"github.com/sanyog2491/bookings2/pkg/models"
+	"github.com/sanyog2491/bookings2/package/models"
 )
 
 var functions = template.FuncMap{}
