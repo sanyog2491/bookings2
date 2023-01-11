@@ -7,6 +7,7 @@ import (
 	"net/http"
 
 	"github.com/sanyog2491/bookings2/internal/config"
+	"github.com/sanyog2491/bookings2/internal/forms"
 	"github.com/sanyog2491/bookings2/internal/models"
 
 	"github.com/sanyog2491/bookings2/internal/render"
@@ -57,7 +58,38 @@ func (m *Repository) About(w http.ResponseWriter, r *http.Request) {
 
 // Reservation renders the make a reservation page and displays form
 func (m *Repository) Reservation(w http.ResponseWriter, r *http.Request) {
-	render.RenderTemplate(w, r, "make-reservation.page.tmpl", &models.TemplateData{})
+	render.RenderTemplate(w, r, "make-reservation.page.tmpl", &models.TemplateData{
+
+		Form: forms.New(nil),
+	})
+}
+func (m *Repository) PostReservation(w http.ResponseWriter, r *http.Request) {
+	err := r.ParseForm()
+	if err != nil {
+		log.Println(err)
+		return
+	}
+	reservation := models.Reservation{
+		Firstname: r.Form.Get("first_name"),
+		Lastname:  r.Form.Get("last_name"),
+		Phone:     r.Form.Get("phone"),
+		Email:     r.Form.Get("email"),
+	}
+	form := forms.New(r.PostForm)
+
+	form.Has("first_name", r)
+
+	if !form.Valid() {
+		data := make(map[string]interface{})
+		data["reservation"] = reservation
+
+		render.RenderTemplate(w, r, "make-reservation.page.tmpl", &models.TemplateData{
+			Data: data,
+			Form: form,
+		})
+		return
+	}
+
 }
 
 // Generals renders the room page
@@ -85,10 +117,8 @@ func (m *Repository) AvailabilityJson(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Print(err)
 	}
-
 	w.Header().Set("Content-Type", "application/json")
 	w.Write(out)
-
 }
 
 // Availability renders the search availability page
