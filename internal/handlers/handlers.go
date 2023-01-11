@@ -84,8 +84,8 @@ func (m *Repository) PostReservation(w http.ResponseWriter, r *http.Request) {
 		data["reservation"] = reservation
 
 		render.RenderTemplate(w, r, "make-reservation.page.tmpl", &models.TemplateData{
-			Data: data,
 			Form: form,
+			Data: data,
 		})
 		return
 	}
