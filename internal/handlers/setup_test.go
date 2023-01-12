@@ -55,7 +55,7 @@ func GetRoutes() http.Handler {
 	mux := chi.NewRouter()
 
 	mux.Use(middleware.Recoverer)
-	mux.Use(NoSurf)
+	//mux.Use(NoSurf)
 	mux.Use(SessionLoad)
 
 	mux.Get("/", Repo.Home)
@@ -124,3 +124,11 @@ func CreateTestemplateCache() (map[string]*template.Template, error) {
 	}
 	return myCache, nil
 }
+
+// func AddDefaultData(td *models.TemplateData, r *http.Request) *models.TemplateData {
+// 	td.Error = app.Session.PopString(r.Context(), "error")
+// 	td.Flash = app.Session.PopString(r.Context(), "flash")
+// 	td.Warning = app.Session.PopString(r.Context(), "warning")
+// 	td.CSRFToken = nosurf.Token(r)
+// 	return td
+// }
