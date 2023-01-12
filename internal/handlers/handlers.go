@@ -94,7 +94,8 @@ func (m *Repository) PostReservation(w http.ResponseWriter, r *http.Request) {
 		})
 		return
 	}
-
+	m.App.Session.Put(r.Context(), "reservation", reservation)
+	http.Redirect(w, r, "/reservation-summary", http.StatusSeeOther)
 }
 
 // Generals renders the room page
@@ -135,4 +136,30 @@ func (m *Repository) PostAvailability(w http.ResponseWriter, r *http.Request) {
 	start := r.Form.Get("start")
 	end := r.Form.Get("end")
 	w.Write([]byte(fmt.Sprintf("leave start date %s and leave end date %s", start, end)))
+}
+
+// ReservationSummary displays the res summary page
+func (m *Repository) ReservationSummary(w http.ResponseWriter, r *http.Request) {
+
+	reservation, ok := m.App.Session.Get(r.Context(), "reservation").(models.Reservation)
+
+	if !ok {
+		log.Println("can not load the session data")
+
+		m.App.Session.Put(r.Context(), "error", "can't get reservation from error page")
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return
+	}
+	data := make(map[string]interface{})
+
+	data["reservation"] = reservation
+
+	render.RenderTemplate(w, r, "reservation-summary.page.tmpl", &models.TemplateData{
+		Data: data,
+	})
+}
+
+func (m *Repository) Contact(w http.ResponseWriter, r *http.Request) {
+
+	render.RenderTemplate(w, r, "contact.page.tmpl", &models.TemplateData{})
 }
