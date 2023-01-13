@@ -14,7 +14,7 @@ type Form struct {
 	Errors errors
 }
 
-//New initializes a new form
+// New initializes a new form
 func (f *Form) Valid() bool {
 	return len(f.Errors) == 0
 }
@@ -35,7 +35,7 @@ func (f *Form) Required(fields ...string) {
 
 	}
 }
-func (f *Form) MinLength(field string, length int, r *http.Request) bool {
+func (f *Form) MinLength(field string, length int) bool {
 	err := f.Get(field)
 
 	if len(err) < length {
@@ -54,8 +54,8 @@ func (f *Form) MinLength2(length int, r *http.Request, fields ...string) {
 		}
 	}
 }
-func (f *Form) Has(field string, r *http.Request) bool {
-	x := r.Form.Get(field)
+func (f *Form) Has(field string) bool {
+	x := f.Get(field)
 
 	if x == "" {
 		f.Errors.Add(field, "Field Required!")
