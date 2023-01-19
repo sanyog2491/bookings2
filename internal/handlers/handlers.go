@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"database/sql/driver"
 	"encoding/json"
 	"fmt"
 	"log"
@@ -9,6 +10,8 @@ import (
 	"github.com/sanyog2491/bookings2/internal/config"
 	"github.com/sanyog2491/bookings2/internal/forms"
 	"github.com/sanyog2491/bookings2/internal/models"
+	"github.com/sanyog2491/bookings2/internal/repository"
+	"github.com/sanyog2491/bookings2/internal/repository/dbrepo"
 
 	"github.com/sanyog2491/bookings2/internal/render"
 )
@@ -19,12 +22,14 @@ var Repo *Repository
 // Repository is the repository type
 type Repository struct {
 	App *config.AppConfig
+	DB  repository.DatabaseRepo
 }
 
 // NewRepo creates a new repository
-func NewRepo(a *config.AppConfig) *Repository {
+func NewRepo(a *config.AppConfig, db *driver.DB) *Repository {
 	return &Repository{
 		App: a,
+		DB:  dbrepo.NewpostgressRepo(db.SQL, a),
 	}
 }
 
