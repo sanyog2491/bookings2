@@ -32,9 +32,9 @@ CREATE TABLE public.reservations (
     phone character varying(255) DEFAULT ''::character varying NOT NULL,
     start_date date NOT NULL,
     end_date date NOT NULL,
-    room_id integer NOT NULL,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    room_id integer,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
 );
 
 

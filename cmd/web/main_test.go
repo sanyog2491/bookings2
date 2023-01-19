@@ -1,12 +1,11 @@
 package main
 
-// import "testing"
+import "testing"
 
-// func TestRun(t *testing.T) {
-// 	db, err := run()
+func TestRun(t *testing.T) {
+	_, err := run()
 
-// 	defer db.SQL.Close()
-// 	if err != nil {
-// 		t.Error("failed run()")
-// 	}
-// }
+	if err != nil {
+		t.Error("failed run()")
+	}
+}
