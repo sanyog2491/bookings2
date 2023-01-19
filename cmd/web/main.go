@@ -9,8 +9,8 @@ import (
 	"time"
 
 	"github.com/alexedwards/scs/v2"
-	"github.com/sanyog2491/bookings2/driver"
 	"github.com/sanyog2491/bookings2/internal/config"
+	"github.com/sanyog2491/bookings2/internal/driver"
 	"github.com/sanyog2491/bookings2/internal/handlers"
 	"github.com/sanyog2491/bookings2/internal/helpers"
 	"github.com/sanyog2491/bookings2/internal/models"
@@ -80,11 +80,12 @@ func run() (*driver.DB, error) {
 		log.Fatal("cannot create template cache")
 		return nil, err
 	}
+	log.Println("Connected to database!")
 
 	app.TemplateCache = tc
 	app.UseCache = false
 
-	repo := handlers.NewRepo(&app, db)
+	repo := handlers.NewRepo(&app)
 	handlers.NewHandlers(repo)
 	helpers.NewHelpers(&app)
 	render.NewTemplates(&app)
