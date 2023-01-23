@@ -95,9 +95,11 @@
     <script src="https://cdn.jsdelivr.net/npm/vanillajs-datepicker@1.1.2/dist/js/datepicker-full.min.js"></script>
     <script src="https://unpkg.com/notie"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.15.5/dist/sweetalert2.min.js"></script>
+    <script src="https://unpkg.com/notie"></script>
 
 
-    {{block "js" .}} {{end}}
+    {{block "js" .}} 
+    {{end}}
 
     <script>
         let attention = Prompt();
@@ -121,6 +123,9 @@
         })();
 
 
+
+
+
         function notify(msg, msgType) {
             notie.alert({
                 type: msgType,
@@ -135,6 +140,8 @@
                 icon: icon,
                 confirmButtonText: confirmationButtonText
             })
+        } {
+            end
         }
 
         function Prompt() {
@@ -249,6 +256,11 @@
                 custom: custom,
             }
         }
+
+        {{with.Error}}
+        notify("{{.}}", "error")
+            {{end}}   
+
     </script>
 
 </body>
