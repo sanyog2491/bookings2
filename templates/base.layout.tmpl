@@ -132,6 +132,10 @@
                 text: msg,
             })
         }
+           {{with.Error}}      
+        notify("{{.}}","error")
+        {{end}}
+        
 
         function notifyModal(title, text, icon, confirmationButtonText) {
             Swal.fire({
@@ -256,10 +260,8 @@
                 custom: custom,
             }
         }
-
-        {{with.Error}}
-        notify("{{.}}", "error")
-            {{end}}   
+     
+   
 
     </script>
 
