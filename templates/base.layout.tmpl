@@ -72,8 +72,6 @@
     </nav>
     {{block "content" .}} {{end}}
 
-
-
     <footer class="my-footer">
         <div class="row">
             <div class="col">
@@ -122,17 +120,13 @@
             }, false);
         })();
 
-
-
-
-
         function notify(msg, msgType) {
             notie.alert({
                 type: msgType,
                 text: msg,
             })
         }
-           {{with.Error}}      
+        {{with.Error}}      
         notify("{{.}}","error")
         {{end}}
         
@@ -203,7 +197,6 @@
                     text: msg,
                     footer: footer,
                 })
-
             }
 
             async function custom(c) {
@@ -250,9 +243,7 @@
                         c.callback(false);
                     }
                 }
-
             }
-
             return {
                 toast: toast,
                 success: success,
@@ -260,12 +251,7 @@
                 custom: custom,
             }
         }
-     
-   
-
     </script>
-
 </body>
-
 </html>
 {{end}}

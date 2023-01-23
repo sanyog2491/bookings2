@@ -8,6 +8,8 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/go-chi/chi/v5"
+
 	"github.com/sanyog2491/bookings2/internal/config"
 	"github.com/sanyog2491/bookings2/internal/driver"
 	"github.com/sanyog2491/bookings2/internal/helpers"
@@ -137,6 +139,13 @@ func (m *Repository) PostReservation(w http.ResponseWriter, r *http.Request) {
 		ReservationID: newReservationID,
 		RestrictionID: 1,
 	}
+	//stroring start date and end date in the session
+
+	res := models.Reservation{
+		StartDate: time.Time{},
+		EndDate:   time.Time{},
+	}
+	m.App.Session.Put(r.Context(), "reservation", res)
 	err = m.DB.InsertRoomRestriction(restriction)
 	if err != nil {
 		helpers.ServerError(w, err)
@@ -202,11 +211,16 @@ func (m *Repository) PostAvailability(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if len(rooms) == 0 {
-		m.App.Session.Put(r.Context(), "error", "No availability")
+		m.App.Session.Put(r.Context(), "error", "Sorry! No Availability on these dates")
 		http.Redirect(w, r, "/search-availability", http.StatusSeeOther)
 		return
 	}
-	w.Write([]byte(fmt.Sprintf("leave start date %s and leave end date %s", start, end)))
+	data := make(map[string]interface{})
+	data["rooms"] = rooms
+	render.Template(w, r, "choose-room.page.tmpl", &models.TemplateData{
+		Data: data,
+	})
+	//w.Write([]byte(fmt.Sprintf("leave start date %s and leave end date %s", start, end)))
 }
 
 // ReservationSummary displays the res summary page
@@ -233,4 +247,23 @@ func (m *Repository) ReservationSummary(w http.ResponseWriter, r *http.Request) 
 func (m *Repository) Contact(w http.ResponseWriter, r *http.Request) {
 
 	render.Template(w, r, "contact.page.tmpl", &models.TemplateData{})
+}
+
+func (m *Repository) ChooseRoom(w http.ResponseWriter, r *http.Request) {
+
+	roomID, err := strconv.Atoi(chi.URLParam(r, "id"))
+	if err != nil {
+		helpers.ServerError(w, err)
+		return
+	}
+	res, ok := m.App.Session.Get(r.Context(), "reservation").(models.Reservation)
+	if !ok {
+		helpers.ServerError(w, err)
+		return
+	}
+	res.RoomID = roomID
+
+	m.App.Session.Put(r.Context(), "reservation", res)
+
+	http.Redirect(w, r, "/make-reservation", http.StatusSeeOther)
 }
