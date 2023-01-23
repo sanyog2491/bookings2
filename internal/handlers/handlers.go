@@ -2,13 +2,13 @@ package handlers
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"log"
 	"net/http"
 	"strconv"
+	"strings"
 	"time"
-
-	"github.com/go-chi/chi/v5"
 
 	"github.com/sanyog2491/bookings2/internal/config"
 	"github.com/sanyog2491/bookings2/internal/driver"
@@ -70,12 +70,27 @@ func (m *Repository) About(w http.ResponseWriter, r *http.Request) {
 
 // Reservation renders the make a reservation page and displays form
 func (m *Repository) Reservation(w http.ResponseWriter, r *http.Request) {
-	var emptyReservation models.Reservation
+	res, ok := m.App.Session.Get(r.Context(), "reservation").(models.Reservation)
+
+	if !ok {
+		helpers.ServerError(w, errors.New("cannot get reservation"))
+		return
+	}
+
+	sd := res.StartDate.Format("2006-01-02")
+	ed := res.EndDate.Format("2006-01-02")
+
+	stringMap := make(map[string]string)
+	stringMap["start_date"] = sd
+	stringMap["end_date"] = ed
+
 	data := make(map[string]interface{})
-	data["reservation"] = emptyReservation
+	data["reservation"] = res
+
 	render.Template(w, r, "make-reservation.page.tmpl", &models.TemplateData{
-		Form: forms.New(nil),
-		Data: data,
+		Form:      forms.New(nil),
+		Data:      data,
+		StringMap: stringMap,
 	})
 }
 func (m *Repository) PostReservation(w http.ResponseWriter, r *http.Request) {
@@ -141,11 +156,6 @@ func (m *Repository) PostReservation(w http.ResponseWriter, r *http.Request) {
 	}
 	//stroring start date and end date in the session
 
-	res := models.Reservation{
-		StartDate: time.Time{},
-		EndDate:   time.Time{},
-	}
-	m.App.Session.Put(r.Context(), "reservation", res)
 	err = m.DB.InsertRoomRestriction(restriction)
 	if err != nil {
 		helpers.ServerError(w, err)
@@ -217,6 +227,12 @@ func (m *Repository) PostAvailability(w http.ResponseWriter, r *http.Request) {
 	}
 	data := make(map[string]interface{})
 	data["rooms"] = rooms
+
+	res := models.Reservation{
+		StartDate: time.Time{},
+		EndDate:   time.Time{},
+	}
+	m.App.Session.Put(r.Context(), "reservation", res)
 	render.Template(w, r, "choose-room.page.tmpl", &models.TemplateData{
 		Data: data,
 	})
@@ -251,16 +267,22 @@ func (m *Repository) Contact(w http.ResponseWriter, r *http.Request) {
 
 func (m *Repository) ChooseRoom(w http.ResponseWriter, r *http.Request) {
 
-	roomID, err := strconv.Atoi(chi.URLParam(r, "id"))
+	// split the URL up by /, and grab the 3rd element
+	exploded := strings.Split(r.RequestURI, "/")
+	roomID, err := strconv.Atoi(exploded[2])
 	if err != nil {
-		helpers.ServerError(w, err)
+		m.App.Session.Put(r.Context(), "error", "missing url parameter")
+		http.Redirect(w, r, "/", http.StatusSeeOther)
 		return
 	}
+
 	res, ok := m.App.Session.Get(r.Context(), "reservation").(models.Reservation)
 	if !ok {
-		helpers.ServerError(w, err)
+		m.App.Session.Put(r.Context(), "error", "Can't get reservation from session")
+		http.Redirect(w, r, "/", http.StatusSeeOther)
 		return
 	}
+
 	res.RoomID = roomID
 
 	m.App.Session.Put(r.Context(), "reservation", res)
