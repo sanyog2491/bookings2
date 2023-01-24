@@ -54,7 +54,7 @@
                 </div>
             </div>
         </form>
-        `;
+        `
         attention.custom({
             title: 'Choose your dates',
             msg: html,
@@ -63,6 +63,7 @@
                 const rp = new DateRangePicker(elem, {
                     format: 'yyyy-mm-dd',
                     showOnFocus: true,
+                    minDate:new Date(),
                 })
             },
             didOpen: () => {
@@ -75,19 +76,26 @@
                 let form = document.getElementById("check-availability-form");
                 let formData = new FormData(form);
                 formData.append("csrf_token", "{{.CSRFToken}}");
+                formData.append("room_id", "1");
 
-                fetch('/search-availabilityjson', {
-                        method: "post",
+                fetch('/search-availability-json', {
+                        method:"post",
                         body: formData,
                     })
-                    .then(response => response.json())
-                    .then(data => {
-                        console.log(data);
-                        console.log(data.Ok);
-                        console.log(data.message);
-                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.ok) {
+                                attention.success({
+                                    msg:"Room available",
+                                })
+                            } else {
+                                attention.error({
+                                    msg:"NO room available",
+                                })
+                            }
+                        })
             }
-        });
+        }); 
     })
 </script>
 {{end}}

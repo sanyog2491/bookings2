@@ -53,17 +53,27 @@ func (m *postgressDBRepo) InsertRoomRestriction(r models.RoomRestriction) error 
 	}
 	return nil
 }
-func (m *postgressDBRepo) SearchAvailabilityByDatesByRoomID(start, end time.Time) (bool, error) {
+func (m *postgressDBRepo) SearchAvailabilityByDatesByRoomID(start, end time.Time, roomID int) (bool, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
-	var numRows int
-	query := `select count(id) from room_restrictions where room_id=$1 and $2<end_date and $3>start_date;`
 
-	row := m.DB.QueryRowContext(ctx, query, start, end)
+	var numRows int
+
+	query := `
+		select
+			count(id)
+		from
+			room_restrictions
+		where
+			room_id = $1
+			and $2 < end_date and $3 > start_date;`
+
+	row := m.DB.QueryRowContext(ctx, query, roomID, start, end)
 	err := row.Scan(&numRows)
 	if err != nil {
 		return false, err
 	}
+
 	if numRows == 0 {
 		return true, nil
 	}
@@ -101,4 +111,24 @@ func (m *postgressDBRepo) SearchAvailabilityForAllRooms(start, end time.Time) ([
 		log.Fatal("Error scanning rows", err)
 	}
 	return rooms, nil
+}
+
+func (m *postgressDBRepo) GetRoomByID(id int) (models.Room, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
+	var room models.Room
+
+	query := `select id,room_name from rooms where id = $1`
+
+	row := m.DB.QueryRowContext(ctx, query, id)
+
+	err := row.Scan(
+		&room.ID,
+		&room.RoomName,
+	)
+	if err != nil {
+		return room, err
+	}
+	return room, nil
 }
