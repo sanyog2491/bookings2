@@ -234,7 +234,7 @@ func (m *Repository) AvailabilityJson(w http.ResponseWriter, r *http.Request) {
 
 	endDate, _ := time.Parse(layout, ed)
 
-	roomid, _ := strconv.Atoi(r.Form.Get("room_id"))
+	roomid, _ := strconv.Atoi(r.Form.Get("roomid"))
 
 	available, _ := m.DB.SearchAvailabilityByDatesByRoomID(startDate, endDate, roomid)
 
@@ -243,7 +243,11 @@ func (m *Repository) AvailabilityJson(w http.ResponseWriter, r *http.Request) {
 		Message: "",
 	}
 
-	out, _ := json.MarshalIndent(resp, "", "     ")
+	out, err := json.MarshalIndent(resp, "", "     ")
+	if err != nil {
+		helpers.ServerError(w, err)
+		return
+	}
 
 	w.Header().Set("Content-Type", "application/json")
 	w.Write(out)
