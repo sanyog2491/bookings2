@@ -19,27 +19,21 @@ var theTests = []struct {
 	params             []postData
 	expectedstatuscode int
 }{
-	{"home", "/", "GET", []postData{}, http.StatusOK},
-	{"ab", "/about", "GET", []postData{}, http.StatusOK},
-	{"gq", "/generals-quarters", "GET", []postData{}, http.StatusOK},
-	{"ms", "/majors-suite", "GET", []postData{}, http.StatusOK},
-	{"sa", "/search-availability", "GET", []postData{}, http.StatusOK},
-	{"ms", "/make-reservation", "GET", []postData{}, http.StatusOK},
-	{"co", "/contact", "GET", []postData{}, http.StatusOK},
-	{"post-search-avail", "/search-availability", "POST", []postData{
-		{key: "start", value: "2020-01-01"},
-		{key: "end", value: "2020-01-02"},
-	}, http.StatusOK},
-	{"post-search-avail", "/search-availabilityjson", "POST", []postData{
-		{key: "start", value: "2020-01-01"},
-		{key: "end", value: "2020-01-02"},
-	}, http.StatusOK},
-	{"make reservation post", "/make-reservation", "POST", []postData{
-		{key: "first_name", value: "John"},
-		{key: "last_name", value: "smit"},
-		{key: "email", value: "John@gmail.com"},
-		{key: "phone", value: "555-555-5555"},
-	}, http.StatusOK},
+	{"home", "/", "GET", http.StatusOK},
+	{"about", "/about", "GET", http.StatusOK},
+	{"gq", "/generals-quarters", "GET", http.StatusOK},
+	{"ms", "/majors-suite", "GET", http.StatusOK},
+	{"sa", "/search-availability", "GET", http.StatusOK},
+	{"contact", "/contact", "GET", http.StatusOK},
+	{"non-existent", "/green/eggs/and/ham", "GET", http.StatusNotFound},
+	{"login", "/user/login", "GET", http.StatusOK},
+	{"logout", "/user/logout", "GET", http.StatusOK},
+	{"dashboard", "/admin/dashboard", "GET", http.StatusOK},
+	{"new res", "/admin/reservations-new", "GET", http.StatusOK},
+	{"all res", "/admin/reservations-all", "GET", http.StatusOK},
+	{"show res", "/admin/reservations/new/1/show", "GET", http.StatusOK},
+	{"show res cal", "/admin/reservations-calendar", "GET", http.StatusOK},
+	{"show res cal with params", "/admin/reservations-calendar?y=2020&m=1", "GET", http.StatusOK},
 }
 
 func TestHandlers(t *testing.T) {
