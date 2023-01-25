@@ -336,31 +336,34 @@ func (m *Repository) ChooseRoom(w http.ResponseWriter, r *http.Request) {
 }
 
 func (m *Repository) BookRoom(w http.ResponseWriter, r *http.Request) {
-	roomi, _ := strconv.Atoi(r.URL.Query().Get("id"))
+	roomID, _ := strconv.Atoi(r.URL.Query().Get("id"))
 
-	startdate := r.URL.Query().Get("s")
-	enddate := r.URL.Query().Get("e")
-	log.Println(roomi, startdate, enddate)
-	// layout := "2006-01-02"
+	sd := r.URL.Query().Get("s")
+	ed := r.URL.Query().Get("e")
 
-	// startdate, _ := time.Parse(layout, sd)
-	// enddate, _ := time.Parse(layout, ed)
+	log.Println(roomID, sd, ed)
+	layout := "2006-01-02"
 
-	// var res models.Reservation
+	startdate, _ := time.Parse(layout, sd)
+	enddate, _ := time.Parse(layout, ed)
 
-	// room, _ := m.DB.GetRoomByID(roomid)
-	// if err != nil {
-	// 	helpers.ServerError(w, err)
-	// 	return
-	// }
+	var res models.Reservation
 
-	// res.Room.RoomName = room.RoomName
-	// res.RoomID = roomid
-	// res.StartDate = startdate
-	// res.EndDate = enddate
+	res.RoomID = roomID
 
-	// m.App.Session.Put(r.Context(), "reservation", res)
+	room, err := m.DB.GetRoomByID(roomID)
 
-	// http.Redirect(w, r, "/make-reservation", http.StatusSeeOther)
+	if err != nil {
+		helpers.ServerError(w, err)
+	}
 
+	res.Room.RoomName = room.RoomName
+
+	res.RoomID = roomID
+	res.StartDate = startdate
+	res.EndDate = enddate
+
+	m.App.Session.Put(r.Context(), "reservation", res)
+
+	http.Redirect(w, r, "/make-reservation", http.StatusSeeOther)
 }
