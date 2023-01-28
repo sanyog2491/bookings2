@@ -409,3 +409,37 @@ func (m *Repository) ShowLogin(w http.ResponseWriter, r *http.Request) {
 		Form: forms.New(nil),
 	})
 }
+
+func (m *Repository) PostShowLogin(w http.ResponseWriter, r *http.Request) {
+	//prevents something known as session fixtation attack everytime u r doing login or logout make sure you use renew token
+	_ = m.App.Session.RenewToken(r.Context())
+
+	err := r.ParseForm()
+	email := r.Form.Get("email")
+	password := r.Form.Get("password")
+
+	if err != nil {
+		log.Println(err)
+	}
+	form := forms.New(r.PostForm)
+	form.Required("email", "password")
+
+	if !form.Valid() {
+		render.Template(w, r, "login.page.tmpl", &models.TemplateData{
+			Form: form,
+		})
+		return
+	}
+
+	id, _, err := m.DB.Authenticate(email, password)
+
+	if err != nil {
+		log.Println(err)
+		m.App.Session.Put(r.Context(), "error", "Invalid credentials")
+		http.Redirect(w, r, "/user/login", http.StatusSeeOther)
+		return
+	}
+	m.App.Session.Put(r.Context(), "user_id", id)
+	m.App.Session.Put(r.Context(), "flash", "loged in successfully")
+	http.Redirect(w, r, "/", http.StatusSeeOther)
+}
