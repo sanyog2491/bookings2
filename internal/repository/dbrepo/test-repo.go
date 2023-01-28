@@ -5,7 +5,7 @@ import (
 	"log"
 	"time"
 
-	"github.com/sanyog2491/bookings2/internal/models"
+	"github.com/sanyogpatel-tecblic/bookings/internal/models"
 )
 
 func (m *testDBRepo) AllUsers() bool {

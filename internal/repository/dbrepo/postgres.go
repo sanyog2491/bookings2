@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"github.com/pkg/errors"
-	"github.com/sanyog2491/bookings2/internal/models"
+	"github.com/sanyogpatel-tecblic/bookings/internal/models"
 	"golang.org/x/crypto/bcrypt"
 )
 

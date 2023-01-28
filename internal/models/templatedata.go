@@ -1,6 +1,6 @@
 package models
 
-import "github.com/sanyog2491/bookings2/internal/forms"
+import "github.com/sanyogpatel-tecblic/bookings/internal/forms"
 
 // TemplateData holds data sent from handlers to templates
 type TemplateData struct {

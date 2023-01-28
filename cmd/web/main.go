@@ -9,12 +9,12 @@ import (
 	"time"
 
 	"github.com/alexedwards/scs/v2"
-	"github.com/sanyog2491/bookings2/internal/config"
-	"github.com/sanyog2491/bookings2/internal/driver"
-	"github.com/sanyog2491/bookings2/internal/handlers"
-	"github.com/sanyog2491/bookings2/internal/helpers"
-	"github.com/sanyog2491/bookings2/internal/models"
-	"github.com/sanyog2491/bookings2/internal/render"
+	"github.com/sanyogpatel-tecblic/bookings/internal/config"
+	"github.com/sanyogpatel-tecblic/bookings/internal/driver"
+	"github.com/sanyogpatel-tecblic/bookings/internal/handlers"
+	"github.com/sanyogpatel-tecblic/bookings/internal/helpers"
+	"github.com/sanyogpatel-tecblic/bookings/internal/models"
+	"github.com/sanyogpatel-tecblic/bookings/internal/render"
 )
 
 const portNumber = ":8090"

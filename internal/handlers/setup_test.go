@@ -16,9 +16,9 @@ import (
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
 	"github.com/justinas/nosurf"
-	"github.com/sanyog2491/bookings2/internal/config"
-	"github.com/sanyog2491/bookings2/internal/models"
-	"github.com/sanyog2491/bookings2/internal/render"
+	"github.com/sanyogpatel-tecblic/bookings/internal/config"
+	"github.com/sanyogpatel-tecblic/bookings/internal/models"
+	"github.com/sanyogpatel-tecblic/bookings/internal/render"
 )
 
 var app config.AppConfig

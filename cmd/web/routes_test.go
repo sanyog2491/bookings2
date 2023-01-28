@@ -5,7 +5,7 @@ import (
 	"testing"
 
 	"github.com/go-chi/chi/v5"
-	"github.com/sanyog2491/bookings2/internal/config"
+	"github.com/sanyogpatel-tecblic/bookings/internal/config"
 )
 
 func TestRoutes(t *testing.T) {
