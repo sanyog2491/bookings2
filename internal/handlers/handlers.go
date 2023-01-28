@@ -12,8 +12,6 @@ import (
 	"github.com/sanyogpatel-tecblic/bookings/internal/config"
 	"github.com/sanyogpatel-tecblic/bookings/internal/repository/dbrepo"
 
-	// "github.com/sanyogpatel-tecblic/bookings/internal/dbrepo"
-	// "github.com/sanyogpatel-tecblic/bookings/internal/dbrepo"
 	"github.com/sanyogpatel-tecblic/bookings/internal/driver"
 	"github.com/sanyogpatel-tecblic/bookings/internal/helpers"
 	"github.com/sanyogpatel-tecblic/bookings/internal/repository"
