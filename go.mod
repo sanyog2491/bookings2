@@ -11,7 +11,6 @@ require (
 	github.com/jackc/pgx/v4 v4.17.2
 	github.com/justinas/nosurf v1.1.1
 	github.com/pkg/errors v0.9.1
-	github.com/sanyog2491/bookings2 v0.0.0-20230127125617-95f85bd9d35d
 	github.com/xhit/go-simple-mail/v2 v2.13.0
 	golang.org/x/crypto v0.5.0
 )
